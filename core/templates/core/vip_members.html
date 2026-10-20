@@ -1,0 +1,26 @@
+
+{% extends "core/base.html" %}
+
+{% block title %}{% if lang == "es" %}Miembros VIP anteriores{% else %}Previous VIP Members{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="section-heading">{% if lang == "es" %}Miembros VIP{% else %}Previous VIP Members{% endif %}</h1>
+    <div class="cards">
+        {% for member in vip_members %}
+            <article class="card">
+                <h2>{{ member.name }}</h2>
+                <p><strong>{% if lang == "es" %}Nivel de membresía{% else %}Membership Level{% endif %}:</strong> {{ member.membership_level }}</p>
+                <p><strong>{% if lang == "es" %}Fecha de membresía{% else %}Membership Date{% endif %}:</strong> {{ member.membership_date|date:"F j, Y" }}</p>
+                {% if lang == "es" and member.bio_es %}
+                    {{ member.bio_es|linebreaks }}
+                {% elif member.bio_en %}
+                    {{ member.bio_en|linebreaks }}
+                {% endif %}
+            </article>
+        {% empty %}
+            <p>{% if lang == "es" %}Todavía no hay perfiles VIP publicados.{% else %}There are no published VIP member profiles yet.{% endif %}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

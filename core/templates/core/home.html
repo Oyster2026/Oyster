@@ -1,0 +1,80 @@
+
+{% extends "core/base.html" %}
+
+{% block title %}
+{% if lang == "es" %}Inicio{% else %}Home{% endif %} | {{ company_name|default:"Our Company" }}
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>
+            {% if page %}
+                {% if lang == "es" %}{{ page.title_es|default:page.title_en }}{% else %}{{ page.title_en|default:page.title_es }}{% endif %}
+            {% elif lang == "es" %}
+                Bienvenido a {{ company_name|default:"Nuestra empresa" }}
+            {% else %}
+                Welcome to {{ company_name|default:"Our Company" }}
+            {% endif %}
+        </h1>
+        <p>
+            {% if tagline %}
+                {{ tagline }}
+            {% elif lang == "es" %}
+                Conozca nuestros servicios y oportunidades.
+            {% else %}
+                Discover our company, services and opportunities.
+            {% endif %}
+        </p>
+        <a class="button" href="{% url 'about' %}?lang={{ lang }}">
+            {% if lang == "es" %}Conózcanos{% else %}Learn More{% endif %}
+        </a>
+        <a class="button" href="{% url 'contact' %}?lang={{ lang }}">
+            {% if lang == "es" %}Contáctenos{% else %}Contact Us{% endif %}
+        </a>
+    </div>
+</section>
+
+<div class="container">
+    {% if page %}
+        <section>
+            {% if lang == "es" %}
+                {{ page.body_es|default:page.body_en|linebreaks }}
+            {% else %}
+                {{ page.body_en|default:page.body_es|linebreaks }}
+            {% endif %}
+        </section>
+    {% endif %}
+
+    <section>
+        <h2 class="section-heading">{% if lang == "es" %}Últimas oportunidades{% else %}Latest Job Opportunities{% endif %}</h2>
+        <div class="cards">
+            {% for job in jobs %}
+                <article class="card">
+                    <h3>{% if lang == "es" %}{{ job.title_es|default:job.title_en }}{% else %}{{ job.title_en }}{% endif %}</h3>
+                    <p class="muted">{{ job.location }}</p>
+                    <p>{% if lang == "es" %}{{ job.description_es|default:job.description_en|truncatewords:25 }}{% else %}{{ job.description_en|truncatewords:25 }}{% endif %}</p>
+                    <a class="button" href="{% url 'jobs' %}?lang={{ lang }}">{% if lang == "es" %}Ver empleos{% else %}View Jobs{% endif %}</a>
+                </article>
+            {% empty %}
+                <p>{% if lang == "es" %}Próximamente publicaremos oportunidades.{% else %}Job opportunities will be listed here soon.{% endif %}</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-heading">{% if lang == "es" %}Miembros VIP{% else %}VIP Members{% endif %}</h2>
+        <div class="cards">
+            {% for member in vip_members %}
+                <article class="card">
+                    <h3>{{ member.name }}</h3>
+                    <p>{{ member.membership_level }}</p>
+                    <p class="muted">{{ member.membership_date|date:"F Y" }}</p>
+                </article>
+            {% empty %}
+                <p>{% if lang == "es" %}La información de miembros estará disponible próximamente.{% else %}Member profiles will appear here when published by the administrator.{% endif %}</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

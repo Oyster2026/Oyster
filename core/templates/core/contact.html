@@ -1,0 +1,90 @@
+```html
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="container">
+    {% if page %}
+        <h1>
+            {% if lang == "es" %}
+                {{ page.title_es }}
+            {% else %}
+                {{ page.title_en }}
+            {% endif %}
+        </h1>
+
+        <div>
+            {% if lang == "es" %}
+                {{ page.body_es|linebreaks }}
+            {% else %}
+                {{ page.body_en|linebreaks }}
+            {% endif %}
+        </div>
+    {% else %}
+        <h1>
+            {% if lang == "es" %}
+                Contáctanos
+            {% else %}
+                Contact Us
+            {% endif %}
+        </h1>
+    {% endif %}
+
+    {% if success %}
+        <p role="status" class="contact-success">
+            {% if lang == "es" %}
+                Tu mensaje se ha enviado correctamente.
+            {% else %}
+                Your message was sent successfully.
+            {% endif %}
+        </p>
+    {% endif %}
+
+    
+<form method="post" class="contact-form">
+    {% csrf_token %}
+    {{ form.website }}
+
+    <div class="form-field">
+        <label for="{{ form.name.id_for_label }}">
+            {% if lang == "es" %}Nombre{% else %}Name{% endif %}
+        </label>
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+
+    <div class="form-field">
+        <label for="{{ form.email.id_for_label }}">
+            {% if lang == "es" %}Correo electrónico{% else %}Email{% endif %}
+        </label>
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+
+    <div class="form-field">
+        <label for="{{ form.subject.id_for_label }}">
+            {% if lang == "es" %}Asunto{% else %}Subject{% endif %}
+        </label>
+        {{ form.subject }}
+        {{ form.subject.errors }}
+    </div>
+
+    <div class="form-field">
+        <label for="{{ form.message.id_for_label }}">
+            {% if lang == "es" %}Mensaje{% else %}Message{% endif %}
+        </label>
+        {{ form.message }}
+        {{ form.message.errors }}
+    </div>
+
+    <button type="submit">
+        {% if lang == "es" %}
+            Enviar mensaje
+        {% else %}
+            Send Message
+        {% endif %}
+    </button>
+</form>
+
+</section>
+{% endblock %}
+```

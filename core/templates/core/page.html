@@ -1,0 +1,43 @@
+
+{% extends "core/base.html" %}
+
+{% block title %}
+{% if page %}
+    {% if lang == "es" %}{{ page.title_es|default:page.title_en }}{% else %}{{ page.title_en|default:page.title_es }}{% endif %}
+{% else %}
+    {% if page_slug == "about" %}{% if lang == "es" %}Nosotros{% else %}About Us{% endif %}
+    {% elif page_slug == "contact" %}{% if lang == "es" %}Contacto{% else %}Contact{% endif %}
+    {% else %}{% if lang == "es" %}Ser miembro VIP{% else %}Become a VIP Member{% endif %}{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if page %}
+        <h1 class="section-heading">
+            {% if lang == "es" %}{{ page.title_es|default:page.title_en }}{% else %}{{ page.title_en|default:page.title_es }}{% endif %}
+        </h1>
+        {% if lang == "es" %}
+            {{ page.body_es|default:page.body_en|linebreaks }}
+        {% else %}
+            {{ page.body_en|default:page.body_es|linebreaks }}
+        {% endif %}
+    {% else %}
+        {% if page_slug == "about" %}
+            <h1 class="section-heading">{% if lang == "es" %}Sobre nosotros{% else %}About Us{% endif %}</h1>
+            <p>{% if lang == "es" %}Conozca nuestra empresa y nuestra misión.{% else %}Learn more about our company, our mission and our work.{% endif %}</p>
+        {% elif page_slug == "contact" %}
+            <h1 class="section-heading">{% if lang == "es" %}Contacto{% else %}Contact Us{% endif %}</h1>
+            {% if company and company.contact_email %}<p>Email: <a href="mailto:{{ company.contact_email }}">{{ company.contact_email }}</a></p>{% endif %}
+            {% if company and company.contact_phone %}<p>{% if lang == "es" %}Teléfono{% else %}Phone{% endif %}: {{ company.contact_phone }}</p>{% endif %}
+            <p>{% if lang == "es" %}Contáctenos mediante los datos anteriores.{% else %}Please contact us using the details above.{% endif %}</p>
+        {% else %}
+            <h1 class="section-heading">{% if lang == "es" %}Conviértase en miembro VIP{% else %}Become a VIP Member{% endif %}</h1>
+            <p>{% if lang == "es" %}Contáctenos para obtener información sobre la membresía VIP.{% else %}Contact us to learn more about VIP membership and eligibility.{% endif %}</p>
+            {% if company and company.contact_email %}
+                <a class="button" href="mailto:{{ company.contact_email }}">{% if lang == "es" %}Solicitar información{% else %}Request Information{% endif %}</a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

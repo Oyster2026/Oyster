@@ -1,0 +1,34 @@
+
+{% extends "core/base.html" %}
+
+{% block title %}{% if lang == "es" %}Empleos disponibles{% else %}Available Jobs{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="section-heading">{% if lang == "es" %}Empleos disponibles{% else %}Available Jobs{% endif %}</h1>
+    <div class="cards">
+        {% for job in jobs %}
+            <article class="card">
+                <h2>{{ job.title_es|default:job.title_en|yesno:" ," }}</h2>
+                {% if lang == "es" %}
+                    <h2>{{ job.title_es|default:job.title_en }}</h2>
+                    <p>{{ job.description_es|default:job.description_en|linebreaks }}</p>
+                {% else %}
+                    <h2>{{ job.title_en }}</h2>
+                    <p>{{ job.description_en|linebreaks }}</p>
+                {% endif %}
+                {% if job.location %}<p><strong>{% if lang == "es" %}Ubicación{% else %}Location{% endif %}:</strong> {{ job.location }}</p>{% endif %}
+                {% if job.salary %}<p><strong>{% if lang == "es" %}Salario{% else %}Salary{% endif %}:</strong> {{ job.salary }}</p>{% endif %}
+                {% if job.application_email %}
+                    <a class="button" href="mailto:{{ job.application_email }}">{% if lang == "es" %}Solicitar{% else %}Apply by Email{% endif %}</a>
+                {% endif %}
+                {% if job.application_url %}
+                    <a class="button" href="{{ job.application_url }}" target="_blank" rel="noopener noreferrer">{% if lang == "es" %}Solicitar en línea{% else %}Apply Online{% endif %}</a>
+                {% endif %}
+            </article>
+        {% empty %}
+            <p>{% if lang == "es" %}No hay empleos publicados en este momento.{% else %}There are no active job listings at the moment.{% endif %}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
